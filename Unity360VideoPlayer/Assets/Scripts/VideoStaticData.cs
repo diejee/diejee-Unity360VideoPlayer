@@ -5,7 +5,8 @@ public class VideoStaticData : MonoBehaviour
 {
     public static string VideoName;
 
-    void Awake() {
+    void Awake() 
+    {
         DontDestroyOnLoad(this);
     }
 }

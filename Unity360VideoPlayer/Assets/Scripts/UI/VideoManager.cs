@@ -4,22 +4,24 @@ using UnityEngine;
 using UnityEngine.Video;
 using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(VideoPlayer))]
 public class VideoManager : MonoBehaviour
 {
-
-    private VideoPlayer videoPlayer;
+    private VideoPlayer _videoPlayer;
+    private bool _isTouching = false;
+    private bool _isPaused = false;
 
     [SerializeField]
-    private GameObject canvas;
+    private GameObject _canvas;
 
     // Start is called before the first frame update
     void Start()
     {
-        videoPlayer = GetComponent<VideoPlayer>();
+        _videoPlayer = GetComponent<VideoPlayer>();
 
-        videoPlayer.clip = Resources.Load<VideoClip>("videos/" + VideoStaticData.VideoName);
-        videoPlayer.Prepare();
-        videoPlayer.prepareCompleted += VideoPlayer_prepareComplete;
+        _videoPlayer.clip = Resources.Load<VideoClip>("videos/" + VideoStaticData.VideoName);
+        _videoPlayer.Prepare();
+        _videoPlayer.prepareCompleted += VideoPlayer_prepareComplete;
     }
 
     private void VideoPlayer_prepareComplete(VideoPlayer source)
@@ -27,28 +29,27 @@ public class VideoManager : MonoBehaviour
         Play();
     }
 
-    private bool isTouching = false;
-    private bool isPaused = false;
+
 
     // Update is called once per frame
     void Update()
     {
         //android
-        if(Input.touchCount > 0  && !isTouching)
+        if(Input.touchCount > 0  && !_isTouching)
         {
                 Pause();
-                isTouching = true;
+                _isTouching = true;
         }
         else 
         {
-            isTouching = false;
+            _isTouching = false;
         }
 
 
         //pc
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            if(!isPaused)
+            if(!_isPaused)
             {
                 Pause();
             }
@@ -61,21 +62,21 @@ public class VideoManager : MonoBehaviour
 
     public void Play()
     {
-        videoPlayer.Play();
-        isPaused = false;
-        canvas.SetActive(false);
+        _videoPlayer.Play();
+        _isPaused = false;
+        _canvas.SetActive(false);
     }
 
     public void Pause() 
     {
-        videoPlayer.Pause();
-        isPaused = true;
-        canvas.SetActive(true);
+        _videoPlayer.Pause();
+        _isPaused = true;
+        _canvas.SetActive(true);
     }
 
     public void Stop() 
     {
-        videoPlayer.Stop();
-        SceneManager.LoadScene("menu");
+        _videoPlayer.Stop();
+        SceneManager.LoadScene(0);
     }   
 }

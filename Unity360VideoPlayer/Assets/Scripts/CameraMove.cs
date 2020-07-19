@@ -8,12 +8,12 @@ public class CameraMove : MonoBehaviour
     public float speed = -3;
 
     // Start is called before the first frame update
-    Quaternion origin=Quaternion.identity;
+    private Quaternion _origin = Quaternion.identity;
 
     void Start()
     {
         Input.gyro.enabled = true;
-        origin=Input.gyro.attitude;
+        _origin=Input.gyro.attitude;
     }
 
     // Update is called once per frame
@@ -21,11 +21,11 @@ public class CameraMove : MonoBehaviour
     {
         // android controls
         #if UNITY_ANDROID
-        if(Input.touchCount > 0 || origin == Quaternion.identity){
-            origin = Input.gyro.attitude;
+        if(Input.touchCount > 0 || _origin == Quaternion.identity){
+            _origin = Input.gyro.attitude;
         }
 
-        transform.localRotation = origin * Input.gyro.attitude;
+        transform.localRotation = Quaternion.Inverse(_origin) * Input.gyro.attitude;
         #endif
 
         //pc controls
