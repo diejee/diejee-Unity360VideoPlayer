@@ -13,7 +13,7 @@ public class CameraMove : MonoBehaviour
     void Start()
     {
         Input.gyro.enabled = true;
-        _origin=Input.gyro.attitude;
+        _origin = Input.gyro.attitude;
     }
 
     // Update is called once per frame
@@ -25,7 +25,7 @@ public class CameraMove : MonoBehaviour
             _origin = Input.gyro.attitude;
         }
 
-        transform.localRotation = Quaternion.Inverse(_origin) * Input.gyro.attitude;
+        transform.localRotation = Quaternion.Inverse(Quaternion.Inverse(_origin) * Input.gyro.attitude);
         #endif
 
         //pc controls
